@@ -2,6 +2,10 @@
 
 Пакет возвращает адрес по гео координатам
 
+```dotenv
+composer require webnitros/locatemap
+```
+
 ```php
 ### API-ключ DaData https://dadata.ru/profile/#info
 define('LOCATE_MAP_TOKEN_DADATA', ""); 
