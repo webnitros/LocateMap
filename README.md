@@ -6,6 +6,7 @@
 composer require webnitros/locatemap
 ```
 
+## Ключи для работы API
 ```php
 ### API-ключ DaData https://dadata.ru/profile/#info
 define('LOCATE_MAP_TOKEN_DADATA', ""); 
