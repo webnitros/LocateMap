@@ -1,7 +1,7 @@
 {
     "name": "webnitros/locatemap",
     "license": "MIT",
-    "version": "1.1.2",
+    "version": "1.0.1",
     "authors": [
         {
             "name": "webnitros",
@@ -10,7 +10,7 @@
     ],
     "scripts": {
         "tests" : "phpunit --bootstrap bootstrap.php",
-        "up:release": "gh release create \"v1.0.0\" --generate-notes"
+        "up:release": "gh release create \"v1.0.2\" --generate-notes"
     },
     "keywords": [
         "client"
@@ -22,6 +22,7 @@
         "ext-json": "*"
     },
     "require-dev": {
+        "roave/security-advisories": "dev-latest",
         "doctrine/dbal": "^2.12",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
