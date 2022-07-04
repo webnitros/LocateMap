@@ -8,8 +8,6 @@
 
 namespace LocateMap;
 
-use LocateMap\Address;
-
 class Session
 {
     protected $data = [];
@@ -17,10 +15,10 @@ class Session
     public function __construct()
     {
         $Address = new Address();
-        $this->data = $Address->toArray();
-        if (!empty($_SESSION['locate_map'])) {
-            $this->data = $_SESSION['locate_map'];
+        if (!empty($_SESSION['locate_map']) && is_array($_SESSION['locate_map'])) {
+            $Address->fromArray($_SESSION['locate_map']);
         }
+        $this->data = $Address->toArray();
     }
 
     public function fromArray(array $data)
@@ -44,7 +42,9 @@ class Session
 
     public function save()
     {
-        $_SESSION['locate_map'] = $this->data;
+        $Address = new Address();
+        $Address->fromArray($this->data);
+        $_SESSION['locate_map'] = $Address->toArray();
     }
 
     public function setCenter(array $coords): bool
@@ -68,6 +68,6 @@ class Session
 
     public function reset()
     {
-        $_SESSION['locate_map'] = [];
+        $_SESSION['locate_map'] = (new Address())->toArray();
     }
 }
