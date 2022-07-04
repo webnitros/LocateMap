@@ -110,7 +110,6 @@ class Address
         if (strripos($val, ',') !== false) {
             $val = str_ireplace(',', '.', $val);
         }
-        $val = (float)$val;
         return $val;
     }
 
