@@ -53,7 +53,7 @@ class Session
         $_SESSION['locate_map'] = $Address->toArray();
     }
 
-    public function setCenter(array $coords): bool
+    public function setCenter(array $coords)
     {
         $coords = array_map('trim', $coords);
         $coords = array_filter($coords);

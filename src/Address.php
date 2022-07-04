@@ -14,17 +14,17 @@ use phpDocumentor\Reflection\Types\Boolean;
 class Address
 {
 
-    protected string $_description = '';
-    protected string $_name = '';
-    protected string $_house = '';
-    protected string $_street = '';
-    protected string $_block = '';
-    protected string $_lat = '';
-    protected string $_lon = '';
-    protected string $_postal_code = '';
-    protected string $_city = '';
-    protected string $_region = '';
-    protected array $_properties = [];
+    protected $_description = '';
+    protected $_name = '';
+    protected $_house = '';
+    protected $_street = '';
+    protected $_block = '';
+    protected $_lat = '';
+    protected $_lon = '';
+    protected $_postal_code = '';
+    protected $_city = '';
+    protected $_region = '';
+    protected $_properties = [];
 
     public function __construct(array $args = [])
     {
@@ -58,28 +58,34 @@ class Address
         return mb_convert_case($str, MB_CASE_TITLE, "UTF-8");
     }
 
-    public function isKnown(): bool
+    /**
+     * @return bool
+     */
+    public function isKnown()
     {
         return !empty($this->name());
     }
 
-    public function name(): string
+    /**
+     * @return string
+     */
+    public function name()
     {
         return $this->_name;
     }
 
-    public function house(): string
+    public function house()
     {
         return $this->_house;
     }
 
 
-    public function street(): string
+    public function street()
     {
         return $this->_street;
     }
 
-    public function description(): string
+    public function description()
     {
 
         return $this->_description;
