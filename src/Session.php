@@ -14,12 +14,18 @@ class Session
 
     public function __construct()
     {
-        $Address = new Address();
+        $Address = $this->address();
         if (!empty($_SESSION['locate_map']) && is_array($_SESSION['locate_map'])) {
             $Address->fromArray($_SESSION['locate_map']);
         }
         $this->data = $Address->toArray();
     }
+
+    public function address()
+    {
+        return new \LocateMap\Address();
+    }
+
 
     public function fromArray(array $data)
     {
@@ -42,7 +48,7 @@ class Session
 
     public function save()
     {
-        $Address = new Address();
+        $Address = $this->address();
         $Address->fromArray($this->data);
         $_SESSION['locate_map'] = $Address->toArray();
     }
@@ -68,6 +74,6 @@ class Session
 
     public function reset()
     {
-        $_SESSION['locate_map'] = (new Address())->toArray();
+        $_SESSION['locate_map'] = $this->address()->toArray();
     }
 }
