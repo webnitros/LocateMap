@@ -28,53 +28,52 @@ class Nominatim extends AbstractProvider implements Provider
         try {
             $lat = str_ireplace(',', '.', (string)$lat);
             $lon = str_ireplace(',', '.', (string)$lon);
-            $response = $client->setAcceptLanguage('ru')->reverse($lat, $lon);
+            $response = $client->setAcceptLanguage('ru')->reverse($lat, $lon, [
+                'addressdetails' => true
+            ]);
             if ($response->isOK()) {
 
-                #   $add = $response->getAddress();
                 $data = $response->toArray();
 
-                $desc = $data['display_name'];
-                $name = $street = $house = $block = $postal_code = '';
-                if (!empty($data['place_id'])) {
-                    $details = $client->details($data['place_id']);
-                    $row = $details->toArray();
+                $Address = $this->getAddress();
+                $add = $data['address'];
+                if (!empty($add['house_number'])) {
+                    list($house, $block) = explode(' ', $add['house_number']);
 
-                    if (!empty($row['calculated_postcode'])) {
-                        $postal_code = $row['calculated_postcode'];
-                    }
-
-                    if (!empty($row['localname'])) {
-                        $name = $row['localname'];
-                    }
-
-                    if (!empty($row['addresstags']['street'])) {
-                        $street = $row['addresstags']['street'];
-                    }
-
-                    if (!empty($row['addresstags']['housenumber'])) {
-                        if (strripos($row['addresstags']['housenumber'], '/') !== false) {
-                            list($house, $block) = explode('/', $row['addresstags']['housenumber']);
-                        } else {
-                            $house = $row['addresstags']['housenumber'];
-                        }
-                    }
-
-                    if (!empty($street) && !empty($house)) {
-                        $name = $street . ', д ' . $house;
+                    $Address->setHouse($house);
+                    if ($block) {
+                        $Address->setBlock($block);
                     }
                 }
 
-                $Address = $this->getAddress();
+                if (!empty($add['road'])) {
+                    $Address->setStreet($add['road']);
+                }
+                if (!empty($add['residential'])) {
+                    $Address->setResidential($add['residential']);
+                }
+                if (!empty($add['town'])) {
+                    $Address->setCity($add['town']);
+                }
+
+                if (!empty($add['state'])) {
+                    $Address->setRegion($add['state']);
+                }
+
+                if (!empty($add['display_name'])) {
+                    $Address->setDescription($add['display_name']);
+                }
+                if (!empty($add['postcode'])) {
+                    $Address->setPostalCode($add['postcode']);
+                }
+
+
+                $name = $Address->generateName();
                 $Address
                     ->setLat($lat)
                     ->setLon($lon)
-                    ->setPostalCode($postal_code)
-                    ->setName($name)
-                    ->setStreet($street)
-                    ->setHouse($house)
-                    ->setBlock($block)
-                    ->setDescription($desc);
+                    ->setName($name);
+
             } else {
                 throw new ExceptionLocationMap('Address not found');
             }

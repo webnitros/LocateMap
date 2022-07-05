@@ -24,6 +24,7 @@ class Address
     protected $_postal_code = '';
     protected $_city = '';
     protected $_region = '';
+    protected $_residential = '';
     protected $_properties = [];
 
     public function __construct(array $args = [])
@@ -98,6 +99,44 @@ class Address
         return $this;
     }
 
+    public function setResidential(string $name)
+    {
+        $this->_residential = $name;
+        return $this;
+    }
+
+    public function residential()
+    {
+        return $this->_residential;
+    }
+
+
+    public function generateName()
+    {
+        $city = $this->city();
+        $residential = $this->residential();
+        $steet = $this->street();
+        $house = $this->house();
+        $block = $this->block();
+        $name = '';
+        if (!empty($steet)) {
+            $name = $steet;
+
+            if (!empty($house)) {
+                $name .= ', ' . $house;
+            }
+
+            if (!empty($block)) {
+                $name .= ' ' . $block;
+            }
+
+        } else if (!empty($residential)) {
+            $name = $city . ', ' . $residential;
+        } else if (!empty($city)) {
+            $name = $city;
+        }
+        return $name;
+    }
 
     public function setLat(string $lat)
     {
