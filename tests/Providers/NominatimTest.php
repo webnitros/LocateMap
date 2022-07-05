@@ -16,8 +16,8 @@ class NominatimTest extends TestCase
 
     public function test_request()
     {
-        $this->lat = '44.89053512592696';
-        $this->lon = '37.337410001883455';
+        $this->lat = '44.850394203175';
+        $this->lon = '37.356163102096';
 
         $Provider = new Nominatim();
         $Provider->request($this->lat, $this->lon);

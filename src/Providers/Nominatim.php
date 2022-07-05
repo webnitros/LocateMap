@@ -24,6 +24,7 @@ class Nominatim extends AbstractProvider implements Provider
      */
     public function _request(float $lat, float $lon): void
     {
+
         $client = new \Nominatim\Client();
         try {
             $lat = str_ireplace(',', '.', (string)$lat);
@@ -32,11 +33,12 @@ class Nominatim extends AbstractProvider implements Provider
                 'addressdetails' => true
             ]);
             if ($response->isOK()) {
-
                 $data = $response->toArray();
 
                 $Address = $this->getAddress();
                 $add = $data['address'];
+
+
                 if (!empty($add['house_number'])) {
                     list($house, $block) = explode(' ', $add['house_number']);
 
@@ -52,8 +54,12 @@ class Nominatim extends AbstractProvider implements Provider
                 if (!empty($add['residential'])) {
                     $Address->setArea($add['residential']);
                 }
+
+
                 if (!empty($add['town'])) {
                     $Address->setCity($add['town']);
+                } else if (!empty($add['village'])) {
+                    $Address->setCity($add['village']);
                 }
 
                 if (!empty($add['state'])) {
