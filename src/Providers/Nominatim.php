@@ -50,7 +50,7 @@ class Nominatim extends AbstractProvider implements Provider
                     $Address->setStreet($add['road']);
                 }
                 if (!empty($add['residential'])) {
-                    $Address->setResidential($add['residential']);
+                    $Address->setArea($add['residential']);
                 }
                 if (!empty($add['town'])) {
                     $Address->setCity($add['town']);

@@ -24,7 +24,7 @@ class Address
     protected $_postal_code = '';
     protected $_city = '';
     protected $_region = '';
-    protected $_residential = '';
+    protected $_area = '';
     protected $_properties = [];
 
     public function __construct(array $args = [])
@@ -99,22 +99,22 @@ class Address
         return $this;
     }
 
-    public function setResidential(string $name)
+    public function setArea(string $name)
     {
-        $this->_residential = $name;
+        $this->_area = $name;
         return $this;
     }
 
-    public function residential()
+    public function area()
     {
-        return $this->_residential;
+        return $this->_area;
     }
 
 
     public function generateName()
     {
         $city = $this->city();
-        $residential = $this->residential();
+        $residential = $this->area();
         $steet = $this->street();
         $house = $this->house();
         $block = $this->block();
