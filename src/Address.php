@@ -288,6 +288,20 @@ class Address
 
     public function setKind(string $kind)
     {
+        switch ($kind) {
+            case 'metro':
+                $kind = 'street';
+                break;
+            case 'district':
+            case 'area':
+                $kind = 'locality';
+                break;
+            case 'province':
+                $kind = 'country';
+                break;
+            default:
+                break;
+        }
         $this->_kind = $kind;
         return $this;
     }
