@@ -60,7 +60,7 @@ class Session
     {
         $Address = $this->address();
         $Address->fromArray($this->data);
-        $_SESSION['locate_map'] = $Address->toArray();
+        $_SESSION[$this->keySession()] = $Address->toArray();
     }
 
     public function setCenter(array $coords)
