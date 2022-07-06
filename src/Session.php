@@ -11,14 +11,24 @@ namespace LocateMap;
 class Session
 {
     protected $data = [];
+    protected $key_session = 'locatemap';
 
-    public function __construct()
+    public function __construct($key = null)
     {
         $Address = $this->address();
-        if (!empty($_SESSION['locate_map']) && is_array($_SESSION['locate_map'])) {
-            $Address->fromArray($_SESSION['locate_map']);
+        if (!empty($key)) {
+            $this->key_session = $key;
+        }
+        $key = $this->keySession();
+        if (!empty($_SESSION[$key]) && is_array($_SESSION[$key])) {
+            $Address->fromArray($_SESSION[$key]);
         }
         $this->data = $Address->toArray();
+    }
+
+    public function keySession()
+    {
+        return $this->key_session;
     }
 
     public function address()
@@ -60,20 +70,22 @@ class Session
         if (count($coords) != 2) {
             return false;
         }
-        $_SESSION['locate_map_center_coords'] = $coords;
+        $key = $this->keySession();
+        $_SESSION[$key . '_center_coords'] = $coords;
         return true;
     }
 
     public function getCenter()
     {
-        if (!empty($_SESSION['locate_map_center_coords'])) {
-            return $_SESSION['locate_map_center_coords'];
+        $key = $this->keySession();
+        if (!empty($_SESSION[$key . '_center_coords'])) {
+            return $_SESSION[$key . '_center_coords'];
         }
         return null;
     }
 
     public function reset()
     {
-        $_SESSION['locate_map'] = $this->address()->toArray();
+        $_SESSION[$this->keySession()] = $this->address()->toArray();
     }
 }
