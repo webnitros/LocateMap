@@ -34,13 +34,7 @@ class Nominatim extends AbstractProvider implements Provider
             ]);
             if ($response->isOK()) {
                 $data = $response->toArray();
-
-
                 $Address = $this->getAddress();
-                echo '<pre>';
-                print_r($data);
-                die;
-
                 $kind = null;
                 switch ($data['osm_type']) {
                     case 'way':
