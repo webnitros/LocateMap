@@ -45,9 +45,21 @@ class Yandex extends AbstractProvider implements Provider
 
 
             $Address = $this->getAddress();
-            $Components = $res['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['metaDataProperty']['GeocoderMetaData']['Address']['Components'];
-            $postal_code = $res['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['metaDataProperty']['GeocoderMetaData']['Address']['postal_code'];
+            $Components = @$res['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['metaDataProperty']['GeocoderMetaData']['Address']['Components'];
+            $postal_code = @$res['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['metaDataProperty']['GeocoderMetaData']['Address']['postal_code'];
+            $country_code = @$res['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['metaDataProperty']['GeocoderMetaData']['Address']['country_code'];
+            $kind = @$res['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['metaDataProperty']['GeocoderMetaData']['kind'];
 
+
+
+            if (!empty($kind)) {
+                $Address->setKind($kind);
+            }
+
+
+            if (!empty($country_code)) {
+                $Address->setCountryCode($country_code);
+            }
 
             foreach ($Components as $component) {
                 $field = $component['kind'];

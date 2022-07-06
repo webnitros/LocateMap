@@ -35,42 +35,80 @@ class Nominatim extends AbstractProvider implements Provider
             if ($response->isOK()) {
                 $data = $response->toArray();
 
+
                 $Address = $this->getAddress();
-                $add = $data['address'];
+                echo '<pre>';
+                print_r($data);
+                die;
+
+                $kind = null;
+                switch ($data['osm_type']) {
+                    case 'way':
+                        $kind = 'house';
+                        break;
+                    case 'node':
+                        $kind = 'locality';
+                        break;
+                    case 'relation':
+                        $kind = 'country';
+                        break;
+                    default:
+                        break;
+                }
+
+                if ($kind) {
+                    $Address->setKind($kind);
+                }
+
+                if (!empty($data['address'])) {
+                    $add = $data['address'];
+
+                    if (!empty($add['house_number'])) {
+
+                        $ext = explode(' ', $add['house_number']);
+
+                        if (count($ext) == 2) {
+                            list($house, $block) = explode(' ', $ext);
+                        } else {
+                            $house = $add['house_number'];
+                        }
 
 
-                if (!empty($add['house_number'])) {
-                    list($house, $block) = explode(' ', $add['house_number']);
+                        $Address->setHouse($house);
+                        if (!empty($block)) {
+                            $Address->setBlock($block);
+                        }
+                    }
 
-                    $Address->setHouse($house);
-                    if ($block) {
-                        $Address->setBlock($block);
+                    if (!empty($add['road'])) {
+                        $Address->setStreet($add['road']);
+                    }
+                    if (!empty($add['residential'])) {
+                        $Address->setArea($add['residential']);
+                    }
+
+
+                    if (!empty($add['town'])) {
+                        $Address->setCity($add['town']);
+                    } else if (!empty($add['village'])) {
+                        $Address->setCity($add['village']);
+                    }
+
+                    if (!empty($add['state'])) {
+                        $Address->setRegion($add['state']);
+                    }
+
+                    if (!empty($add['display_name'])) {
+                        $Address->setDescription($add['display_name']);
+                    }
+                    if (!empty($add['postcode'])) {
+                        $Address->setPostalCode($add['postcode']);
                     }
                 }
 
-                if (!empty($add['road'])) {
-                    $Address->setStreet($add['road']);
-                }
-                if (!empty($add['residential'])) {
-                    $Address->setArea($add['residential']);
-                }
 
-
-                if (!empty($add['town'])) {
-                    $Address->setCity($add['town']);
-                } else if (!empty($add['village'])) {
-                    $Address->setCity($add['village']);
-                }
-
-                if (!empty($add['state'])) {
-                    $Address->setRegion($add['state']);
-                }
-
-                if (!empty($add['display_name'])) {
-                    $Address->setDescription($add['display_name']);
-                }
-                if (!empty($add['postcode'])) {
-                    $Address->setPostalCode($add['postcode']);
+                if (!empty($data['country_code'])) {
+                    $Address->setCountryCode($data['country_code']);
                 }
 
 

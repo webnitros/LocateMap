@@ -15,6 +15,16 @@ use Tests\TestCase;
 
 class DaDataTest extends TestCase
 {
+    public function testRequest2()
+    {
+        $Response = new DaData();
+        $Address = $Response->request($this->lat, $this->lon);
+        self::assertEquals($Address->name(), 'Мой адрес не дом и не улица');
+        self::assertEquals($Address->house(), 5);
+        self::assertEquals($Address->street(), 'Бродячик');
+        self::assertEquals($Address->description(), 'Россия Бродячик');
+    }
+
     public function testRequest()
     {
         $Response = Mockery::mock(DaData::class);

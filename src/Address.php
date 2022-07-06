@@ -25,7 +25,13 @@ class Address
     protected $_city = '';
     protected $_region = '';
     protected $_area = '';
+    protected $_country_code = '';
+    protected $_kind = '';
     protected $_properties = [];
+
+    /**
+     * @var string
+     */
 
     public function __construct(array $args = [])
     {
@@ -223,6 +229,18 @@ class Address
         return $this->_postal_code;
     }
 
+
+    public function setCountryCode($country_code)
+    {
+        $this->_country_code = mb_strtolower($country_code);
+        return $this;
+    }
+
+    public function country_code()
+    {
+        return $this->_country_code;
+    }
+
     public function region()
     {
         return $this->_region;
@@ -268,5 +286,15 @@ class Address
         return $default;
     }
 
+    public function setKind(string $kind)
+    {
+        $this->_kind = $kind;
+        return $this;
+    }
+
+    public function kind()
+    {
+        return $this->_kind;
+    }
 
 }

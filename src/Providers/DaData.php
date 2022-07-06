@@ -37,7 +37,7 @@ class DaData extends AbstractProvider implements Provider
         }
 
 
-        if (!empty($result[0])) {
+        if (!empty($result[0]['data'])) {
             $row = $result[0];
             $data = $result[0]['data'];
 
@@ -77,6 +77,37 @@ class DaData extends AbstractProvider implements Provider
 
 
             $Address = $this->getAddress();
+
+            if (!empty($data['country_iso_code'])) {
+                $Address->setCountryCode($data['country_iso_code']);
+            }
+
+
+            $qc_geo_name = null;
+            $qc_geo = (int)$data['qc_geo'];
+            switch ($qc_geo) {
+                case 0: //Точные координаты
+                case 1: //Ближайший дом
+                    $qc_geo_name = 'house';
+                    break;
+                case 2: // Улица
+                    $qc_geo_name = 'street';
+                    break;
+                case 3: // Населенный пункт
+                case 4: // Город
+                    $qc_geo_name = 'locality';
+                    break;
+                case 5: // не определены
+                    break;
+                default:
+                    break;
+            }
+
+            if (!empty($qc_geo_name)) {
+                $Address->setKind($qc_geo_name);
+            }
+
+
             $Address
                 ->setLat($lat)
                 ->setLon($lon)
