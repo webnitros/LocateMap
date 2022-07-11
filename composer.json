@@ -1,7 +1,7 @@
 {
     "name": "webnitros/locatemap",
     "license": "MIT",
-    "version": "2.0.15",
+    "version": "2.0.16",
     "authors": [
         {
             "name": "webnitros",
@@ -10,7 +10,7 @@
     ],
     "scripts": {
         "tests" : "phpunit --bootstrap bootstrap.php",
-        "up:release": "gh release create \"2.0.15\" --generate-notes"
+        "up:release": "gh release create \"2.0.16\" --generate-notes"
     },
     "keywords": [
         "client"

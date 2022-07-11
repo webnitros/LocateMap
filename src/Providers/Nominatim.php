@@ -34,6 +34,7 @@ class Nominatim extends AbstractProvider implements Provider
             ]);
             if ($response->isOK()) {
                 $data = $response->toArray();
+
                 $Address = $this->getAddress();
                 $kind = null;
                 switch ($data['osm_type']) {
@@ -82,6 +83,10 @@ class Nominatim extends AbstractProvider implements Provider
                     }
 
 
+                    if (!empty($add['city'])) {
+                        $Address->setRegion($add['city']);
+                    }
+
                     if (!empty($add['town'])) {
                         $Address->setCity($add['town']);
                     } else if (!empty($add['village'])) {
@@ -91,6 +96,8 @@ class Nominatim extends AbstractProvider implements Provider
                     if (!empty($add['state'])) {
                         $Address->setRegion($add['state']);
                     }
+
+
 
                     if (!empty($add['display_name'])) {
                         $Address->setDescription($add['display_name']);
